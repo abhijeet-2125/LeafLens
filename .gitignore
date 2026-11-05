@@ -1,0 +1,35 @@
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Testing and formatting
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Datasets and generated artifacts
+data/
+artifacts/
+models/
+mlruns/
+.dvc/cache/
+
+# Logs
+*.log
+logs/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.egg-info/
