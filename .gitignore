@@ -20,8 +20,17 @@ htmlcov/
 data/raw/plantvillage\ dataset/grayscale/
 data/raw/plantvillage\ dataset/segmented/
 data/raw/plantvillage\ dataset/color/
-artifacts/
-models/
+# Generated artifacts: allow DVC-managed model and metrics directories
+artifacts/*
+!artifacts/models/
+!artifacts/metrics/
+
+# Ignore generated contents; allow DVC's local ignore metadata
+artifacts/models/*
+!artifacts/models/.gitignore
+artifacts/metrics/*
+!artifacts/metrics/.gitignore
+/models/
 mlruns/
 .dvc/cache/
 

@@ -1,0 +1,23 @@
+stages:
+  prepare_dataset:
+    cmd: python scripts/split_dataset.py
+    deps:
+    - data/raw/plantvillage dataset/color
+    - scripts/split_dataset.py
+    outs:
+    - data/processed/dataset_manifest.csv
+  train_model:
+    cmd: python -m ml.training.train
+    deps:
+    - data/processed/dataset_manifest.csv
+    - ml/preprocessing/dataset.py
+    - ml/training/config.py
+    - ml/training/engine.py
+    - ml/training/model.py
+    - ml/training/train.py
+    - pyproject.toml
+    outs:
+    - artifacts/models/mobilenetv3_best.pth
+    metrics:
+    - artifacts/metrics/training_metrics.json:
+        cache: false
