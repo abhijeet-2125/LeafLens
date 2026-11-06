@@ -45,3 +45,6 @@ logs/
 .vscode/
 .idea/
 *.egg-info/
+
+# MLflow local tracking database
+mlflow.db*
