@@ -1,0 +1,84 @@
+schema: '2.0'
+stages:
+  prepare_dataset:
+    cmd: python scripts/split_dataset.py
+    deps:
+    - path: data/raw/plantvillage dataset/color
+      hash: md5
+      md5: 01e35a50e98710c2ea65663717dbad8d.dir
+      size: 850785369
+      nfiles: 54305
+    - path: scripts/split_dataset.py
+      hash: md5
+      md5: df212ff1677e2bebdaa55158d5d15883
+      size: 1891
+    outs:
+    - path: data/processed/dataset_manifest.csv
+      hash: md5
+      md5: 82ba1d2f1e669ab4e0a825d5b7ff809e
+      size: 8453501
+  train_model:
+    cmd: python -m ml.training.train
+    deps:
+    - path: data/processed/dataset_manifest.csv
+      hash: md5
+      md5: 82ba1d2f1e669ab4e0a825d5b7ff809e
+      size: 8453501
+    - path: ml/preprocessing/dataset.py
+      hash: md5
+      md5: f01a5efb2b612ea02604cd211f0f5f5a
+      size: 2749
+    - path: ml/training/config.py
+      hash: md5
+      md5: 965844642bafb46d073bad4b8a7a515d
+      size: 452
+    - path: ml/training/engine.py
+      hash: md5
+      md5: 64c029bd476a17cb1f0e90e875dd2a0b
+      size: 3404
+    - path: ml/training/model.py
+      hash: md5
+      md5: bb747364d000d6b72e50ca820189911e
+      size: 512
+    - path: ml/training/train.py
+      hash: md5
+      md5: 5b0d8da2ec22141da3852c638add1d23
+      size: 3805
+    - path: pyproject.toml
+      hash: md5
+      md5: c0388872ee42c2dd4817396d4c95289f
+      size: 934
+    outs:
+    - path: artifacts/metrics/training_metrics.json
+      hash: md5
+      md5: 874636cde2988ded96061a80cbb52a1b
+      size: 1944
+    - path: artifacts/models/mobilenetv3_best.pth
+      hash: md5
+      md5: f59f7da58c5cf8ac82fae2ff3792a64e
+      size: 51357699
+  ray_ingest:
+    cmd: python -m pipelines.ray_ingestion
+    deps:
+    - path: data/raw/plantvillage dataset/color
+      hash: md5
+      md5: 01e35a50e98710c2ea65663717dbad8d.dir
+      size: 850785369
+      nfiles: 54305
+    - path: pipelines/ray_ingestion.py
+      hash: md5
+      md5: aef1cf286bce0602fedc8c906675bdbd
+      size: 3948
+    - path: pyproject.toml
+      hash: md5
+      md5: fa098a6ede4c29ced95d8a9230d5d2af
+      size: 959
+    outs:
+    - path: artifacts/metrics/ray_ingestion_metrics.json
+      hash: md5
+      md5: 1e22d2057304b0af22dec5d7a82e1ec7
+      size: 373
+    - path: data/processed/ray_image_metadata.parquet
+      hash: md5
+      md5: df87eaa425560862f987e826fb80cb7a
+      size: 2715502

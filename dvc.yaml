@@ -21,3 +21,14 @@ stages:
     metrics:
     - artifacts/metrics/training_metrics.json:
         cache: false
+  ray_ingest:
+    cmd: python -m pipelines.ray_ingestion
+    deps:
+    - data/raw/plantvillage dataset/color
+    - pipelines/ray_ingestion.py
+    - pyproject.toml
+    outs:
+    - data/processed/ray_image_metadata.parquet
+    metrics:
+    - artifacts/metrics/ray_ingestion_metrics.json:
+        cache: false
