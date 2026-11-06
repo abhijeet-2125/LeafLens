@@ -16,12 +16,10 @@ htmlcov/
 !.env.example
 
 # Datasets and generated artifacts
-data/*
-!data/raw/
-data/raw/*
-!data/raw/plantvillage\ dataset/
-data/raw/plantvillage\ dataset/*
-!data/raw/plantvillage\ dataset/color.dvc
+# PlantVillage dataset directories
+data/raw/plantvillage\ dataset/grayscale/
+data/raw/plantvillage\ dataset/segmented/
+data/raw/plantvillage\ dataset/color/
 artifacts/
 models/
 mlruns/
