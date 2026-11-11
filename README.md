@@ -26,6 +26,12 @@ The project demonstrates the complete lifecycle of an AI application, from datas
 **Author:** Abhijeet Kumar  
 **Roll Number:** DA24B001   
 
+## Live Demo
+
+**[🚀 Try LeafLens — Live Application](https://leaflens-frontend.onrender.com)**
+
+Upload a plant leaf image and get an AI-powered disease prediction with confidence scores. No local installation required.
+
 ---
 
 ## Application Preview
