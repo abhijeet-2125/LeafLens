@@ -19,9 +19,9 @@
   </a>
 </p>
 
-**LeafLens** is an end-to-end AI application that identifies plant leaf diseases from images using deep learning. It combines a MobileNetV3-Large image classification model with a reproducible ML pipeline, distributed data ingestion, experiment tracking, REST API inference, containerized deployment, and real-time operational monitoring.
+**LeafLens** is an end-to-end AI application that identifies plant leaf diseases from images using deep learning. It combines a MobileNetV3-Large image classification model with a reproducible ML pipeline, distributed data ingestion, experiment tracking, REST API inference, containerized deployment and real-time operational monitoring.
 
-The project demonstrates the complete lifecycle of an AI application — from dataset preparation and model training to deployment, testing, monitoring, and continuous integration.
+The project demonstrates the complete lifecycle of an AI application, from dataset preparation and model training to deployment, testing, monitoring and continuous integration.
 
 **Author:** Abhijeet Kumar  
 **Roll Number:** DA24B001   
