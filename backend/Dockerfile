@@ -8,7 +8,7 @@ COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir \
         --index-url https://download.pytorch.org/whl/cpu \
-        "torch==2.15.0" "torchvision==0.29.2" \
+        "torch==2.10.0" "torchvision==0.25.0" \
     && pip install --no-cache-dir -r requirements.txt
 
 # Copy application source
