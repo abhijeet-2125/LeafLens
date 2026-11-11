@@ -46,8 +46,8 @@ stages:
       size: 3805
     - path: pyproject.toml
       hash: md5
-      md5: c0388872ee42c2dd4817396d4c95289f
-      size: 934
+      md5: a8ab198d4cf58878370e6a1167f43f30
+      size: 992
     outs:
     - path: artifacts/metrics/training_metrics.json
       hash: md5
@@ -71,12 +71,12 @@ stages:
       size: 3948
     - path: pyproject.toml
       hash: md5
-      md5: fa098a6ede4c29ced95d8a9230d5d2af
-      size: 959
+      md5: a8ab198d4cf58878370e6a1167f43f30
+      size: 992
     outs:
     - path: artifacts/metrics/ray_ingestion_metrics.json
       hash: md5
-      md5: 1e22d2057304b0af22dec5d7a82e1ec7
+      md5: 0485c6969900ff4d9b724c2719ddd4e8
       size: 373
     - path: data/processed/ray_image_metadata.parquet
       hash: md5
