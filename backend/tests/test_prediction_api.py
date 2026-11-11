@@ -59,3 +59,34 @@ def test_oversized_upload(client):
     response = client.post("/predict",files={"file": ( "large.jpg",oversized_content,"image/jpeg")})
     assert response.status_code == 413
     assert "10 MB" in response.json()["detail"]
+
+def test_prometheus_metrics_endpoint(client):
+    response = client.get("/metrics")
+
+    assert response.status_code == 200
+    assert "text/plain" in response.headers["content-type"]
+
+    metrics = response.text
+
+    assert "leaflens_http_requests_total" in metrics
+    assert "leaflens_http_request_duration_seconds" in metrics
+    assert "leaflens_predictions_total" in metrics
+    assert "leaflens_prediction_confidence" in metrics
+    assert "leaflens_prediction_errors_total" in metrics
+
+
+def test_prediction_metrics_recorded(client):
+    # Generate a request that the middleware should record.
+    health_response = client.get("/health")
+    assert health_response.status_code == 200
+
+    # Scrape metrics after the health request has completed.
+    response = client.get("/metrics")
+
+    assert response.status_code == 200
+
+    metrics = response.text
+
+    assert 'leaflens_predictions_total{predicted_class="' in metrics
+    assert "leaflens_prediction_confidence_count" in metrics
+    assert 'endpoint="/health"' in metrics

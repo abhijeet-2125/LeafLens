@@ -1,9 +1,22 @@
+
 import logging
 from contextlib import asynccontextmanager
 from io import BytesIO
+from time import perf_counter
+
 from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi.responses import Response
 from PIL import Image, UnidentifiedImageError
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
+
 from backend.app.schemas.prediction import PredictionResponse
+from backend.app.core.metrics import (
+    HTTP_REQUESTS,
+    HTTP_REQUEST_DURATION,
+    PREDICTIONS_TOTAL,
+    PREDICTION_CONFIDENCE,
+    PREDICTION_ERRORS,
+)
 from ml.serving.predictor import LeafPredictor
 
 MAX_UPLOAD_SIZE = 10 * 1024 * 1024
@@ -34,6 +47,35 @@ app = FastAPI(
 )
 
 
+@app.middleware("http")
+async def prometheus_metrics_middleware(
+    request: Request,
+    call_next,
+):
+    """Record HTTP request counts and processing durations."""
+    start_time = perf_counter()
+    status_code = 500
+
+    try:
+        response = await call_next(request)
+        status_code = response.status_code
+        return response
+
+    finally:
+        duration = perf_counter() - start_time
+
+        HTTP_REQUESTS.labels(
+            method=request.method,
+            endpoint=request.url.path,
+            status=str(status_code),
+        ).inc()
+
+        HTTP_REQUEST_DURATION.labels(
+            method=request.method,
+            endpoint=request.url.path,
+        ).observe(duration)
+
+
 @app.get("/", tags=["General"])
 def root() -> dict[str, str]:
     """Return basic application information."""
@@ -51,6 +93,15 @@ def health_check() -> dict[str, str]:
         "status": "healthy",
         "service": "leaflens-api",
     }
+
+
+@app.get("/metrics", tags=["Operations"], include_in_schema=False)
+def prometheus_metrics() -> Response:
+    """Expose application metrics in Prometheus exposition format."""
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST,
+    )
 
 
 @app.post(
@@ -98,6 +149,12 @@ async def predict_leaf(
     try:
         result = request.app.state.predictor.predict(image, top_k=5)
 
+        PREDICTIONS_TOTAL.labels(
+            predicted_class=result["predicted_class"]
+        ).inc()
+
+        PREDICTION_CONFIDENCE.observe(result["confidence"])
+
         logger.info(
             "Prediction completed: class=%s confidence=%.4f",
             result["predicted_class"],
@@ -110,6 +167,7 @@ async def predict_leaf(
         )
 
     except Exception:
+        PREDICTION_ERRORS.inc()
         logger.exception("Prediction failed.")
         raise HTTPException(
             status_code=500,
