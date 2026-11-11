@@ -24,10 +24,7 @@
 The project demonstrates the complete lifecycle of an AI application — from dataset preparation and model training to deployment, testing, monitoring, and continuous integration.
 
 **Author:** Abhijeet Kumar  
-**Student ID:** DA24B001  
-**Institution:** IIT Madras  
-**Project:** LeafLens  
-**Version:** 0.1.0
+**Roll Number:** DA24B001   
 
 ---
 
